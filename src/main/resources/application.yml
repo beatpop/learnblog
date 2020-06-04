@@ -1,0 +1,78 @@
+server:
+  port: 8282
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/learnblog?useSSL=true&useUnicode=true&charset=utf8&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: test
+    password: 12345678
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  # 设置序列化的时间区间
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # 设置数据迁移版本控制
+  flyway:
+    enabled: true
+    encoding: UTF-8
+    locations: classpath:/db/migration/
+    check-location: true
+    connect-retries: 5
+
+  # 视图模板设置为freemarker
+  freemarker:
+    template-loader-path: classpath:/templates/
+    check-template-location: true
+    suffix: .ftl
+    cache: false
+    settings:
+      classic_compatible: true #处理空值
+      template_exception_handler: rethrow
+      template_update_delay: 0
+      datetime_format: yyyy-MM-dd HH:mm
+      number_format: 0.##
+
+  # 设置静态资源目录
+  mvc:
+    static-path-pattern: /static/**
+
+  output:
+    ansi:
+      enabled: always
+
+  # 简单配置 Redis
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 1
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 100
+        max-idle: 20
+        min-idle: 0
+        max-wait: 30000
+
+  # 设置MongoDB
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/learnblog
+
+  # 设置 log
+logging:
+  level:
+    root: info
+  file:
+    path: "D:\\dockerworkspace\\workspace\\learning\\java\\projects\\learnblog\\target\\logs"
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS
+    file: "[%level] %date [%thread] %logger{20}.%M %L :%m%n"
