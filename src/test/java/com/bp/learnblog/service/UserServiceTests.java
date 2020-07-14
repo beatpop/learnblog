@@ -1,8 +1,8 @@
 package com.bp.learnblog.service;
 
-import com.bp.learnblog.entity.admin.Role;
-import com.bp.learnblog.entity.admin.User;
-import com.bp.learnblog.service.admin.UserService;
+import com.bp.learnblog.entity.jpa.admin.Role;
+import com.bp.learnblog.entity.jpa.admin.User;
+import com.bp.learnblog.service.jpa.admin.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

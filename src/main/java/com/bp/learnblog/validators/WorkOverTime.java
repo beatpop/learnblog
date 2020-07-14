@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 import java.lang.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 加班超时校验

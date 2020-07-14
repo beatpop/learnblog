@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.learnblog.mapper.admin.RoleMapper">
+    <resultMap id="roleResultMap" type="com.bp.learnblog.entity.mybatis.admin.Role">
+        <result column="id" property="id" javaType="java.lang.Long"/>
+        <result column="name" property="name" javaType="java.lang.String"/>
+        <result column="description" property="description" javaType="java.lang.String"/>
+        <result column="created_time" property="createdTime" javaType="java.util.Date"/>
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date"/>
+        <collection property="permissions" column="id" ofType="com.bp.learnblog.entity.mybatis.admin.Permission"
+                    javaType="java.util.List" select="com.bp.learnblog.mapper.admin.PermissionMapper.findAllByRoleId">
+            <id column="id" property="id" javaType="java.lang.Long"/>
+            <result column="name" property="name" javaType="java.lang.String"/>
+            <result column="description" property="description" javaType="java.lang.String"/>
+            <result column="created_time" property="createdTime" javaType="java.util.Date"/>
+            <result column="updated_time" property="updatedTime" javaType="java.util.Date"/>
+        </collection>
+    </resultMap>
+
+    <!-- Find One By roleId-->
+    <select id="findOne" parameterType="java.lang.Long" resultMap="roleResultMap">
+        SELECT * FROM role WHERE id = #{roleId};
+    </select>
+
+    <!-- Find All with permission List -->
+    <select id="findAll" resultMap="roleResultMap">
+        SELECT * FROM role;
+    </select>
+
+    <select id="findAllByPermissionId" parameterType="java.lang.Long" resultMap="roleResultMap">
+        SELECT r.* FROM role r
+            LEFT JOIN role_permission rp on r.id = rp.role_id
+        WHERE rp.permission_id = #{permissionId};
+    </select>
+
+    <select id="findAllByUserId" parameterType="java.lang.Long" resultMap="roleResultMap">
+        SELECT r.* FROM role r
+            LEFT JOIN user_role ur on r.id = ur.role_id
+        WHERE ur.user_id = #{userId};
+    </select>
+</mapper>

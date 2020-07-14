@@ -9,8 +9,7 @@ CREATE TABLE `post` (
     user_id BIGINT(20) DEFAULT NULL COMMENT '用户id',
     created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客文章表';
 
 # 博客分类表
@@ -22,8 +21,7 @@ CREATE TABLE `category` (
     user_id BIGINT(20) DEFAULT NULL COMMENT '用户id',
     created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客分类表';
 
 # 博客标签表
@@ -35,8 +33,7 @@ CREATE TABLE `tag` (
     user_id BIGINT(20) DEFAULT NULL COMMENT '用户id',
     created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客标签表';
 
 # 博客评价表
@@ -50,10 +47,7 @@ CREATE TABLE `comment` (
     parent_id BIGINT(20) DEFAULT NULL COMMENT '评价回复父ID',
     created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`post_id`) REFERENCES post(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`parent_id`) REFERENCES comment(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客评价表';
 
 # 博客文章类别关联表
@@ -61,8 +55,7 @@ DROP TABLE IF EXISTS `post_category`;
 CREATE TABLE `post_category` (
     post_id BIGINT(20),
     category_id BIGINT(20),
-    FOREIGN KEY (`post_id`) REFERENCES post(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`category_id`) REFERENCES category(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`post_id`, `category_id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客文章类别关联表';
 
 # 博客文章标签关联表
@@ -70,6 +63,5 @@ DROP TABLE IF EXISTS `post_tag`;
 CREATE TABLE `post_tag` (
     post_id BIGINT(20),
     tag_id BIGINT(20),
-    FOREIGN KEY (`post_id`) REFERENCES post(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`tag_id`) REFERENCES tag(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`post_id`, `tag_id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '博客文章标签关联表';

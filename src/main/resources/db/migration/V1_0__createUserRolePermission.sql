@@ -40,8 +40,7 @@ DROP TABLE IF EXISTS user_role;
 CREATE TABLE user_role (
     user_id BIGINT(20),
     role_id BIGINT(20),
-    FOREIGN KEY (`user_id`) REFERENCES user(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`role_id`) REFERENCES role(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`user_id`, `role_id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '用户角色关联表';
 
 # 角色权限表
@@ -49,6 +48,5 @@ DROP TABLE IF EXISTS role_permission;
 CREATE TABLE role_permission (
     role_id BIGINT(20),
     permission_id BIGINT(20),
-    FOREIGN KEY (`role_id`) REFERENCES role(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`permission_id`) REFERENCES permission(`id`) ON DELETE CASCADE
+    PRIMARY KEY (`role_id`, `permission_id`)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8 COLLATE UTF8_UNICODE_CI COMMENT '角色权限关联表';

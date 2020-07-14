@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bp.learnblog.mapper.admin.UserMapper">
+    <resultMap id="userResultMap" type="com.bp.learnblog.entity.mybatis.admin.User">
+        <result column="id" property="id" javaType="java.lang.Long"/>
+        <result column="username" property="username" javaType="java.lang.String"/>
+        <result column="real_name" property="realName" javaType="java.lang.String"/>
+        <result column="created_time" property="createdTime" javaType="java.util.Date"/>
+        <result column="updated_time" property="updatedTime" javaType="java.util.Date"/>
+        <collection property="roles" column="id" ofType="com.bp.learnblog.entity.mybatis.admin.Role"
+                    javaType="java.util.ArrayList" select="com.bp.learnblog.mapper.admin.RoleMapper.findAllByUserId">
+            <id property="id" column="role_id" javaType="java.lang.Long"/>
+            <result column="name" property="name" javaType="java.lang.String"/>
+            <result column="description" property="description" javaType="java.lang.String"/>
+            <result column="created_time" property="createdTime" javaType="java.util.Date"/>
+            <result column="updated_time" property="updatedTime" javaType="java.util.Date"/>
+        </collection>
+    </resultMap>
+
+    <select id="findOne" parameterType="java.lang.Long" resultMap="userResultMap">
+        SELECT id, username, real_name, password, salt, created_time, updated_time FROM user WHERE id = #{userId};
+    </select>
+
+    <select id="findByUsername" parameterType="java.lang.String" resultMap="userResultMap">
+        SELECT id, username, real_name, password, salt, created_time, updated_time FROM user WHERE username = #{username};
+    </select>
+
+    <select id="findAll" resultMap="userResultMap">
+        SELECT id, username, real_name, password, salt, created_time, updated_time FROM user;
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, real_name, password, salt, created_time, updated_time)
+        VALUES (#{user.username}, #{user.realName}, #{user.password}, #{user.salt},
+                #{user.createdTime}, #{user.updatedTime});
+    </insert>
+
+    <update id="updateById" useGeneratedKeys="true" keyProperty="id">
+        UPDATE user SET username = #{user.username},
+                        <if test="user.realName">real_name = #{user.realName}, </if>
+                        <if test="user.password != null">password = #{user.password}, </if>
+                        <if test="user.salt != null">#{user.salt}, </if>
+                        #{user.updatedTime}
+        WHERE id = #{userId};
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM user WHERE id = #{userId};
+    </delete>
+
+    <!-- 新增用户角色关联 -->
+    <insert id="insertUserRole" useGeneratedKeys="true">
+        INSERT INTO user_role VALUES (#{user.id}, #{role.id});
+    </insert>
+
+    <!-- 根据用户 ID 及角色 ID 按条件删除用户角色关联表数据 -->
+    <delete id="deleteUserRoleByUserRoleId" flushCache="true">
+        <if test="userId != null or roleId != null">
+            DELETE FROM user_role WHERE
+            <choose>
+                <when test="(userId != null and userId != 0) and (roleId != null and roleId !=0)">
+                    user_id = #{userId} AND role_id = #{roleId};
+                </when>
+                <when test="(userId != null and userId != 0)">
+                    user_id = #{userId};
+                </when>
+                <when test="(roleId != null and roleId != 0)">
+                    role_id = #{roleId};
+                </when>
+                <otherwise>
+                    user_id = 0 AND role_id = 0
+                </otherwise>
+            </choose>
+        </if>
+    </delete>
+</mapper>

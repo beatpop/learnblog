@@ -1,9 +1,9 @@
 package com.bp.learnblog.config.shiro;
 
-import com.bp.learnblog.entity.admin.Permission;
-import com.bp.learnblog.entity.admin.Role;
-import com.bp.learnblog.entity.admin.User;
-import com.bp.learnblog.service.admin.UserService;
+import com.bp.learnblog.entity.jpa.admin.Permission;
+import com.bp.learnblog.entity.jpa.admin.Role;
+import com.bp.learnblog.entity.jpa.admin.User;
+import com.bp.learnblog.service.jpa.admin.UserService;
 import com.bp.learnblog.util.JwtUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;

@@ -1,5 +1,11 @@
 server:
   port: 8282
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+  tomcat:
+    uri-encoding: UTF-8
 
 spring:
   datasource:
@@ -7,6 +13,26 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/learnblog?useSSL=true&useUnicode=true&charset=utf8&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: test
     password: 12345678
+    type: com.alibaba.druid.pool.DruidDataSource
+    # druid 数据源专有配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+
+    #配置监控统计拦截的filters，stat:监控统计、wall：防御sql注入
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
 
   jpa:
     show-sql: false
@@ -14,6 +40,9 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: true
+    properties:
+      open-entity-manager-in-view: true
 
   # 设置序列化的时间区间
   jackson:
@@ -54,20 +83,25 @@ spring:
     host: 127.0.0.1
     port: 6379
     database: 1
-    timeout: 3000
+    timeout: 5000ms
     lettuce:
       pool:
         max-active: 100
         max-idle: 20
         min-idle: 0
-        max-wait: 30000
+        max-wait: 30000ms
 
   # 设置MongoDB
   data:
     mongodb:
       uri: mongodb://127.0.0.1:27017/learnblog
 
-  # 设置 log
+# 设置mybatis
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  type-aliases-package: com.bp.learnblog.entity.mybatis
+
+# 设置 log
 logging:
   level:
     root: info
